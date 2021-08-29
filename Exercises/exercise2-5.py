@@ -13,5 +13,3 @@ while counter2 <= int(n2):
     counter2 += 1.0
 
 print(sum2)
-
-## test
