@@ -1,6 +1,7 @@
 from typing import Type
 
 class GeometryShape:
+    """A class to represent the coordinates of a geometry shape"""
     def __init__(self, x: float, y: float) -> None:
         self.x = x
         self.y = y
@@ -26,5 +27,6 @@ class GeometryShape:
         self._y = value
         
     def translate(self, new_x: float, new_y: float) -> None:
+        """Moves the geometry shape to a pair of new coordinates"""
         self.x = new_x
         self.y = new_y
