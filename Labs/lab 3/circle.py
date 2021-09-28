@@ -1,0 +1,32 @@
+from geometry_shape import GeometryShape
+import math
+
+class Circle(GeometryShape):
+    """A class to represent a circle"""
+    def __init__(self, x: float, y: float, radius: float) -> None:
+        super().__init__(x, y)
+        self.radius = radius
+        
+    @property
+    def radius(self) -> float:
+        return self._radius
+    
+    @radius.setter
+    def radius(self, value: float) -> None:
+        if not isinstance(value, (float, int)):
+            raise TypeError(f"radius has to be a float or int, not {type(value)}")
+        self._radius = value
+
+    def area(self) -> float:
+        """Returns the area of the circle"""
+        return math.pi * (self.radius ** 2)
+    
+    def circumference(self) -> float:
+        """Returns the circumference of the circle"""
+        return 2 * math.pi * self.radius
+    
+    def __eq__(self, other: "Circle") -> bool:
+        """Validates if both are circles and have the same radius"""
+        if not type(self) == type(other):
+            return False
+        return self.radius == other.radius
