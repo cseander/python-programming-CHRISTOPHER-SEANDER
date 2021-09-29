@@ -1,4 +1,3 @@
-from typing import Type
 import unittest
 import math
 from geometry_shape import GeometryShape
