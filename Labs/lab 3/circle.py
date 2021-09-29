@@ -30,3 +30,15 @@ class Circle(GeometryShape):
         if not type(self) == type(other):
             return False
         return self.radius == other.radius
+    
+    # found this https://stackoverflow.com/questions/23986266/is-there-a-better-way-of-checking-multiple-variables-are-a-single-type-in-python
+    # for how to check multiple variables in one "isinstance"
+    def is_inside(self, x: float, y: float) -> bool:
+        """Validates if point is inside the circle"""
+        if not all(isinstance(value, (float, int)) for value in (x, y)):
+            raise TypeError("x and y has to be float or int")
+        return math.sqrt((self.x - x) ** 2 + (self.y - y) ** 2) <= self.radius
+
+    def __repr__(self) -> str:
+        """Returns the area, circumference and center point"""
+        return f"circle with {round(self.area(), 2)} area, {round(self.circumference(), 2)} circumference and center point in {self.x, self.y}"

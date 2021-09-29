@@ -3,17 +3,18 @@ import math
 from geometry_shape import GeometryShape
 from circle import Circle
 
-
 class TestGeometryShape(unittest.TestCase):
     def setUp(self) -> None:
         self.x, self.y = 1, 1
-        
+    
+    # GeometryShape with x = 1 and y = 1
     def create_geometry_shape(self) -> GeometryShape:
         return GeometryShape(self.x, self.y)
     
+    # Circle with x = 1, y = 1 and radius = 5
     def create_circle(self) -> Circle:
         return Circle(self.x, self.y, 5)
-        
+    
     def test_create_geometry_shape(self):
         shape = self.create_geometry_shape()
         self.assertEqual((shape.x, shape.y), (self.x, self.y))
@@ -58,6 +59,16 @@ class TestGeometryShape(unittest.TestCase):
         
     def test_circle_equal_invalid_type(self):
         self.assertFalse(self.create_circle() == GeometryShape(1, 1))
+        
+    def test_circle_is_inside(self):
+        self.assertTrue(self.create_circle().is_inside(2, 2))
+    
+    def test_circle_is_inside_false(self):
+        self.assertFalse(self.create_circle().is_inside(10, 10))
+        
+    def test_circle_is_inside_invalid_type(self):
+        with self.assertRaises(TypeError):
+            self.create_circle().is_inside("2", 2)
         
 if __name__ == "__main__":
     unittest.main()
