@@ -41,4 +41,4 @@ class Circle(GeometryShape):
 
     def __repr__(self) -> str:
         """Returns the area, circumference and center point"""
-        return f"circle with {round(self.area(), 2)} area, {round(self.circumference(), 2)} circumference and center point in {self.x, self.y}"
+        return f"circle with area: {round(self.area(), 2)}, circumference: {round(self.circumference(), 2)} and center point in {self.x, self.y}"

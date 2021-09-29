@@ -3,6 +3,7 @@ import math
 from geometry_shape import GeometryShape
 from circle import Circle
 from rectangle import Rectangle
+from cube import Cube
 
 class TestGeometryShape(unittest.TestCase):
     def setUp(self) -> None:
@@ -20,16 +21,20 @@ class TestGeometryShape(unittest.TestCase):
     def create_rectangle(self) -> Rectangle:
         return Rectangle(1, 1, 8, 4)
     
+    # Cube with x = 1, y = 1, z = 1 and side = 4
+    def create_cube(self) -> Cube:
+        return Cube(1, 1, 1, 4)
+    
     # GeometryShape class test
     def test_create_geometry_shape(self):
         shape = self.create_geometry_shape()
         self.assertEqual((shape.x, shape.y), (self.x, self.y))
     
-    def test_geometry_shape_invalid_x(self):
+    def test_geometry_shape_invalid_x_type(self):
         with self.assertRaises(TypeError):
             shape = GeometryShape("1", 1)
     
-    def test_geometry_shape_invalid_y(self):
+    def test_geometry_shape_invalid_y_type(self):
         with self.assertRaises(TypeError):
             shape = GeometryShape(1, "1")
 
@@ -51,7 +56,7 @@ class TestGeometryShape(unittest.TestCase):
         circle2 = Circle(1, 1, 5)
         self.assertEqual(circle1.radius, circle2.radius)
     
-    def test_circle_invalid_radius(self):
+    def test_circle_invalid_radius_type(self):
         with self.assertRaises(TypeError):
             circle = Circle(1, 1, "1")
     
@@ -86,11 +91,11 @@ class TestGeometryShape(unittest.TestCase):
         rectangle2 = Rectangle(1, 1, 8, 4)
         self.assertEqual((rectangle1.side_horizontal, rectangle1.side_vertical), (rectangle2.side_horizontal, rectangle2.side_vertical))
     
-    def test_rectangle_invalid_side_horizontal(self):
+    def test_rectangle_invalid_side_horizontal_type(self):
         with self.assertRaises(TypeError):
             rectangle = Rectangle(1, 1, "8", 4)
     
-    def test_rectangle_invalid_side_vertical(self):
+    def test_rectangle_invalid_side_vertical_type(self):
         with self.assertRaises(TypeError):
             rectangle = Rectangle(1, 1, 8, "4")
     
@@ -98,7 +103,7 @@ class TestGeometryShape(unittest.TestCase):
         self.assertEqual(self.create_rectangle().area(), 8 * 4)
         
     def test_rectangle_circumference(self):
-        self.assertEqual(self.create_rectangle().circumference(), (8 * 2) + (4 * 2))
+        self.assertEqual(self.create_rectangle().circumference(), 2 * (8 + 4))
     
     def test_rectangle_equal(self):
         self.assertTrue(self.create_rectangle() == Rectangle(2, 2, 8, 4))
@@ -127,6 +132,64 @@ class TestGeometryShape(unittest.TestCase):
     def test_rectangle_is_inside_invalid_type_y(self):
         with self.assertRaises(TypeError):
             self.create_circle().is_inside(1, "1")
+            
+    # Cube class tests
+    def test_create_cube(self):
+        cube1 = self.create_cube()
+        cube2 = Cube(2, 2, 2, 4)
+        self.assertEqual(cube1.side, cube2.side)
+        
+    def test_cube_invalid_side_type(self):
+        with self.assertRaises(TypeError):
+            cube = Cube(1, 1, 1, "4")
+            
+    def test_cube_translate(self):
+        cube = self.create_cube()
+        cube2 = Cube(5, 5, 5, 4)
+        cube.translate(5, 5, 5)
+        self.assertEqual((cube.x, cube.y, cube.z), (cube2.x, cube2.y, cube2.z))
+            
+    def test_cube_area(self):
+        self.assertEqual(self.create_cube().area(), 6 * (4 ** 2))
+        
+    def test_cube_perimeter(self):
+        self.assertEqual(self.create_cube().perimeter(), 12 * 4)
+        
+    def test_cube_equal(self):
+        self.assertTrue(self.create_cube() == Cube(2, 2, 2, 4))
+    
+    def test_cube_equal_false(self):
+        self.assertFalse(self.create_cube() == Cube(2, 2, 2, 5))
+        
+    def test_cube_equal_invalid_type(self):
+        self.assertFalse(self.create_cube() == GeometryShape(1, 1))
+    
+    def test_cube_is_inside(self):
+        for x in range(-1, 3):
+            for y in range(-1, 3):
+                for z in range(-1, 3):
+                    self.assertTrue(self.create_cube().is_inside(x, y, z))
+    
+    def test_cube_is_inside_false_x(self):
+        self.assertFalse(self.create_cube().is_inside(10, 1, 1))
+        
+    def test_cube_is_inside_false_y(self):
+        self.assertFalse(self.create_cube().is_inside(1, 10, 1))
+    
+    def test_cube_is_inside_false_z(self):
+        self.assertFalse(self.create_cube().is_inside(1, 1, 10))
+        
+    def test_cube_is_inside_invalid_x_type(self):
+        with self.assertRaises(TypeError):
+            cube = self.create_cube().is_inside("1", 1, 1)
+    
+    def test_cube_is_inside_invalid_y_type(self):
+        with self.assertRaises(TypeError):
+            cube = self.create_cube().is_inside(1, "1", 1)
+            
+    def test_cube_is_inside_invalid_z_type(self):
+        with self.assertRaises(TypeError):
+            cube = self.create_cube().is_inside(1, 1, "1")
 
 if __name__ == "__main__":
     unittest.main()
