@@ -1,9 +1,11 @@
+from typing import Type
 import unittest
 import math
 from geometry_shape import GeometryShape
 from circle import Circle
 from rectangle import Rectangle
 from cube import Cube
+from sphere import Sphere
 
 class TestGeometryShape(unittest.TestCase):
     def setUp(self) -> None:
@@ -25,6 +27,10 @@ class TestGeometryShape(unittest.TestCase):
     def create_cube(self) -> Cube:
         return Cube(1, 1, 1, 4)
     
+    # Sphere with x = 1, y = 1, z = 1 and radius 5
+    def create_sphere(self) -> Sphere:
+        return Sphere(1, 1, 1, 5)
+    
     # GeometryShape class test
     def test_create_geometry_shape(self):
         shape = self.create_geometry_shape()
@@ -44,10 +50,14 @@ class TestGeometryShape(unittest.TestCase):
         shape1.translate(5, 5)
         self.assertEqual((shape1.x, shape1.y), (shape2.x, shape2.y))
         
-    def test_translate_invalid_xy(self):
+    def test_translate_invalid_x_type(self):
         shape = self.create_geometry_shape()
         with self.assertRaises(TypeError):
             shape.translate("5", 5)
+            
+    def test_translate_invalid_y_type(self):
+        shape = self.create_geometry_shape()
+        with self.assertRaises(TypeError):
             shape.translate(5, "5")
     
     # Circle class tests
@@ -190,6 +200,57 @@ class TestGeometryShape(unittest.TestCase):
     def test_cube_is_inside_invalid_z_type(self):
         with self.assertRaises(TypeError):
             cube = self.create_cube().is_inside(1, 1, "1")
+            
+    # Sphere class tests
+    
+    def test_create_sphere(self):
+        sphere1 = self.create_sphere()
+        sphere2 = Sphere(1, 1, 1, 5)
+        self.assertEqual(sphere1.radius, sphere2.radius)
+        
+    def test_sphere_invalid_radius_type(self):
+        with self.assertRaises(TypeError):
+            sphere = Sphere(1, 1, 1, "5")
+            
+    def test_sphere_translate(self):
+        sphere1 = self.create_sphere()
+        sphere2 = Sphere(5, 5, 5, 5)
+        sphere1.translate(5, 5, 5)
+        self.assertEqual((sphere1.x, sphere1.y, sphere1.z), (sphere2.x, sphere2.y, sphere2.z))
+
+    def test_sphere_translate_invalid_z_type(self):
+        with self.assertRaises(TypeError):
+            sphere = Sphere(1, 1, "1", 5)
+
+    def test_sphere_circumference(self):
+        self.assertEqual(self.create_sphere().circumference(), 2 * math.pi * 5)
+        
+    def test_sphere_is_inside(self):
+        self.assertTrue(self.create_sphere().is_inside(2, 2, 2))
+        
+    def test_sphere_is_inside_x_false(self):
+        self.assertFalse(self.create_sphere().is_inside(10, 2, 2))
+    
+    def test_sphere_is_inside_y_false(self):
+        self.assertFalse(self.create_sphere().is_inside(2, 10, 2))
+        
+    def test_sphere_is_inside_z_false(self):
+        self.assertFalse(self.create_sphere().is_inside(2, 2, 10))
+
+    def test_sphere_equal(self):
+        sphere1 = self.create_sphere()
+        sphere2 = Sphere(2, 2, 2, 5)
+        self.assertTrue(sphere1 == sphere2)
+        
+    def test_sphere_equal_false(self):
+        sphere1 = self.create_sphere()
+        sphere2 = Sphere(2, 2, 2, 10)
+        self.assertFalse(sphere1 == sphere2)
+        
+    def test_sphere_equal_invalid_type(self):
+        sphere1 = self.create_sphere()
+        sphere2 = GeometryShape(1, 1)
+        self.assertFalse(sphere1 == sphere2)
 
 if __name__ == "__main__":
     unittest.main()
