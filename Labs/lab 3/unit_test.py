@@ -109,6 +109,25 @@ class TestGeometryShape(unittest.TestCase):
     
     def test_rectangle_equal_invalid_type(self):
         self.assertFalse(self.create_rectangle() == GeometryShape(1, 1))
+        
+    def test_rectangle_is_inside(self):
+        for x in range(-3, 5):
+            for y in range(-1, 3):
+                self.assertTrue(self.create_rectangle().is_inside(x, y))
+                
+    def test_rectangle_is_inside_false_x(self):
+        self.assertFalse(self.create_rectangle().is_inside(10, 1))
+    
+    def test_rectangle_is_inside_false_y(self):
+        self.assertFalse(self.create_rectangle().is_inside(1, 10))
+    
+    def test_rectangle_is_inside_invalid_type_x(self):
+        with self.assertRaises(TypeError):
+            self.create_circle().is_inside("1", 1)
+    
+    def test_rectangle_is_inside_invalid_type_y(self):
+        with self.assertRaises(TypeError):
+            self.create_circle().is_inside(1, "1")
 
 if __name__ == "__main__":
     unittest.main()
